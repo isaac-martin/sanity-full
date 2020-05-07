@@ -1,7 +1,7 @@
 export default {
   type: 'document',
-  name: 'page',
-  title: 'Page',
+  name: 'blogIsaac',
+  title: 'Blog',
   fields: [
     {
       name: 'title',
@@ -21,15 +21,7 @@ export default {
       type: 'array',
       title: 'Page sections',
       description: 'Add, edit, and reorder sections',
-      of: [
-        {type: 'pricing'},
-        {type: 'uiComponentRef'},
-        {type: 'hero'},
-        {type: 'infoRows'},
-        {type: 'ctaColumns'},
-        {type: 'ctaPlug'},
-        {type: 'experiment'}
-      ]
+      of: [{type: 'hero'}, {type: 'infoRows'}, {type: 'ctaColumns'}]
     }
   ]
 }

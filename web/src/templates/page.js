@@ -5,6 +5,7 @@ import Hero from "../components/hero";
 import InfoRows from "../components/InfoRows";
 import CTAColumns from "../components/cta-columns";
 import CTA from "../components/cta";
+import Experiment from "../components/experiment";
 import Pricing from "../components/pricing";
 import { TopWave, BottomWave } from "../components/wave";
 
@@ -42,7 +43,7 @@ export const query = graphql`
   }
 `;
 
-const Page = (props) => {
+const Page = props => {
   const { data, errors } = props;
 
   if (errors) {
@@ -64,7 +65,7 @@ const Page = (props) => {
   const page = data.page || data.route.page;
 
   const content = (page._rawContent || [])
-    .filter((c) => !c.disabled)
+    .filter(c => !c.disabled)
     .map((c, i) => {
       let el = null;
       switch (c._type) {
@@ -76,6 +77,9 @@ const Page = (props) => {
           break;
         case "hero":
           el = <Hero key={c._key} {...c} />;
+          break;
+        case "experiment":
+          el = <Experiment key={c._key} {...c} />;
           break;
         case "ctaColumns":
           el = <CTAColumns key={c._key} {...c} />;
@@ -103,7 +107,7 @@ const Page = (props) => {
 
   const gradient = {
     from: (site.primaryColor && site.primaryColor.hex) || "#d53369",
-    to: (site.secondaryColor && site.secondaryColor.hex) || "#daae51",
+    to: (site.secondaryColor && site.secondaryColor.hex) || "#daae51"
   };
 
   const menuItems = page.navMenu && (page.navMenu.items || []);
@@ -116,7 +120,7 @@ const Page = (props) => {
         description={site.description}
         keywords={site.keywords}
         bodyAttr={{
-          class: "leading-normal tracking-normal text-white gradient",
+          class: "leading-normal tracking-normal text-white gradient"
         }}
         gradient={gradient}
       />
