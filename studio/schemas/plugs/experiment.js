@@ -14,28 +14,9 @@ export default {
       description: 'Not shown on frontend'
     },
     {
-      name: 'experiment',
+      name: 'variations',
       type: 'array',
-      of: [
-        {type: 'pricing'},
-        {type: 'uiComponentRef'},
-        {type: 'hero'},
-        {type: 'infoRows'},
-        {type: 'ctaColumns'},
-        {type: 'ctaPlug'}
-      ]
-    },
-    {
-      name: 'control',
-      type: 'array',
-      of: [
-        {type: 'pricing'},
-        {type: 'uiComponentRef'},
-        {type: 'hero'},
-        {type: 'infoRows'},
-        {type: 'ctaColumns'},
-        {type: 'ctaPlug'}
-      ]
+      of: [{type: 'experimentComponents'}]
     }
   ],
   preview: {

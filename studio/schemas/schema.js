@@ -10,7 +10,6 @@ import navMenu from './documents/navMenu'
 import author from './documents/author'
 import category from './documents/category'
 import post from './documents/post'
-import blog from './documents/blog'
 import page from './documents/page'
 import siteSettings from './documents/siteSettings'
 import route from './documents/route'
@@ -30,6 +29,8 @@ import authorReference from './objects/authorReference'
 import link from './objects/link'
 import variation from './objects/variation'
 import openGraph from './objects/openGraph'
+import experimentComponents from './objects/experimentComponents'
+
 import latex from './latex'
 
 const allPlugs = Object.values(plugs).map(plug => {
@@ -41,7 +42,6 @@ export default createSchema({
   types: schemaTypes // Built-in types
     // Our custom types
     .concat([
-      blog,
       latex,
       localeString,
       variation,
@@ -61,7 +61,8 @@ export default createSchema({
       instagram,
       videoEmbed,
       bodyPortableText,
-      excerptPortableText
+      excerptPortableText,
+      experimentComponents
     ])
     .concat(allPlugs)
 })

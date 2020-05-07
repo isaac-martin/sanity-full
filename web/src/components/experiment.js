@@ -6,19 +6,26 @@ import CTA from "./cta";
 import Pricing from "./pricing";
 import { TopWave, BottomWave } from "./wave";
 
+// These will come from the SDK
+const OptimizelyVariation = ({ children, isVariationActive }) => (
+  <div>{isVariationActive && children}</div>
+);
+const OptimizelyExperiment = ({ children }) => <div>{children}</div>;
+
 const Experiment = props => {
+  const { variations, experimentId } = props;
+  const variationsOpts = variations.map(vari => vari.variationID);
   // Pretend everything in here is using the experiment ID to fetch data from
   // split or optimizely or whatever
   const [experimentBucket, setExperimentBucket] = useState(null);
 
   const simulateExperimentData = () => {
-    const random1or2 = Math.floor(Math.random() * Math.floor(2));
+    const random = Math.floor(Math.random() * Math.floor(variationsOpts.length));
 
-    setExperimentBucket(random1or2 === 1 ? "control" : "experiment");
+    setExperimentBucket(variationsOpts[random]);
   };
 
-  const buildData = (experimentBucket, experiment, control) => {
-    const data = experimentBucket === "control" ? control : experiment;
+  const buildData = data => {
     return data
       .filter(c => !c.disabled)
       .map((c, i) => {
@@ -70,25 +77,31 @@ const Experiment = props => {
   }, []);
 
   console.log("Experiment Value", experimentBucket);
+  console.log("Props", props);
 
-  const { control, experiment } = props;
   return (
     <div className="pt-24">
       {experimentBucket ? (
         <>
-          <button
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            onClick={() => setExperimentBucket("experiment")}
-          >
-            Set To Experiment
-          </button>
-          <button
-            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            onClick={() => setExperimentBucket("control")}
-          >
-            Set To Control
-          </button>
-          {buildData(experimentBucket, experiment, control)}
+          {variations.map(vari => (
+            <button
+              className="bg-transparent hover:bg-blue-500 font-semibold hover:text-white py-2 px-4 border border-white-500 hover:border-transparent rounded"
+              onClick={() => setExperimentBucket(vari.variationID)}
+            >
+              Set To {vari.variationID}
+            </button>
+          ))}
+          <OptimizelyExperiment experiment={experimentId}>
+            {variations.map(vari => (
+              <OptimizelyVariation
+                variaton={vari.variationID}
+                // isVariationActive is a prop we use to simulate what the optimizely components do
+                isVariationActive={vari.variationID === experimentBucket}
+              >
+                {buildData(vari.data)}
+              </OptimizelyVariation>
+            ))}
+          </OptimizelyExperiment>
         </>
       ) : (
         <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-64 w-64"></div>
