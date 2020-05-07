@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Hero from "./hero";
-import InfoRows from "./InfoRows";
-import CTAColumns from "./cta-columns";
-import CTA from "./cta";
-import Pricing from "./pricing";
-import { TopWave, BottomWave } from "./wave";
+import PageBuilder from "./PageBuilder";
 
 // These will come from the SDK
 const OptimizelyVariation = ({ children, isVariationActive }) => (
@@ -25,49 +20,6 @@ const Experiment = props => {
     setExperimentBucket(variationsOpts[random]);
   };
 
-  const buildData = data => {
-    return data
-      .filter(c => !c.disabled)
-      .map((c, i) => {
-        let el = null;
-        switch (c._type) {
-          case "pricing":
-            el = <Pricing key={c._key} {...c} />;
-            break;
-          case "infoRows":
-            el = <InfoRows key={c._key} {...c} />;
-            break;
-          case "hero":
-            el = <Hero key={c._key} {...c} />;
-            break;
-          case "experiment":
-            el = <Experiment key={c._key} {...c} />;
-            break;
-          case "ctaColumns":
-            el = <CTAColumns key={c._key} {...c} />;
-            break;
-          case "ctaPlug":
-            el = <CTA key={c._key} {...c} />;
-            break;
-          case "uiComponentRef":
-            switch (c.name) {
-              case "topWave":
-                el = <TopWave />;
-                break;
-              case "bottomWave":
-                el = <BottomWave />;
-                break;
-              default:
-                break;
-            }
-            break;
-          default:
-            el = null;
-        }
-        return el;
-      });
-  };
-
   useEffect(() => {
     const experiement = setTimeout(() => {
       simulateExperimentData();
@@ -77,7 +29,6 @@ const Experiment = props => {
   }, []);
 
   console.log("Experiment Value", experimentBucket);
-  console.log("Props", props);
 
   return (
     <div className="pt-24">
@@ -98,7 +49,7 @@ const Experiment = props => {
                 // isVariationActive is a prop we use to simulate what the optimizely components do
                 isVariationActive={vari.variationID === experimentBucket}
               >
-                {buildData(vari.data)}
+                <PageBuilder data={vari.data} />
               </OptimizelyVariation>
             ))}
           </OptimizelyExperiment>
